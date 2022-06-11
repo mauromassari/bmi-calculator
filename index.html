@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />
+</head>
+<body>
+
+    <ion-app>
+
+        <ion-header>
+            <ion-toolbar color="secondary">
+                <ion-title class="ion-text-center" >BMI CALCULATOR</ion-title>
+            </ion-toolbar>
+        </ion-header>
+
+        <ion-content>
+            <ion-list>
+
+                <ion-item>
+                    <ion-label position="floating">Weight (Kg)</ion-label>
+                    <ion-input 
+                    type="number" 
+                    placeholder="Weight in kg"
+                    id="weight"
+                    min="30" max="400"
+                    value="70">
+                    </ion-input>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label position="fixed">Height (cm)</ion-label>
+                    <ion-range 
+                    color="secondary" 
+                    min="145" max="280" 
+                    pin="true" snaps="true"
+                    id="height"
+                    value="145">
+
+                        <ion-label slot="start">145</ion-label>
+                        <ion-label slot="end">280</ion-label>
+                    </ion-range>
+                </ion-item>
+
+                <ion-item-divider color="light" class="ion-padding"></ion-item-divider>
+                
+                <ion-button expand="block" onclick="clearInput()" color="danger">Clear</ion-button>
+                <ion-button expand="block" onclick="calculateBMI()" color="primary">Calculate</ion-button>
+            </ion-list>
+
+            <ion-card class="ion-text-center" hidden="true">
+                <ion-card-header>
+                  <ion-card-title>BMI RESULT</ion-card-title>
+                </ion-card-header>
+              
+                <ion-card-content class="ion-padding">
+                  Your BMI is <ion-note color="primary" id="bmiResult"></ion-note>
+                </ion-card-content>
+            </ion-card>
+
+        </ion-content>
+
+          
+
+    </ion-app>
+
+    <script>
+
+        let w = document.getElementById("weight");
+        let h = document.getElementById("height");
+
+        function clearInput() {
+            w.value = w.min;
+            h.value = h.min;
+        }
+
+        function calculateBMI() {
+            let weight = Number.parseInt(w.value);
+            let height = Number.parseInt(h.value);
+            let bmi = (weight / ((height/100)**2)).toFixed(1)
+
+            let bmiResult = document.getElementById("bmiResult");
+            bmiResult.innerHTML = bmi;
+
+            let ionCard = document.querySelector('ion-card')
+            ionCard.hidden = false;
+
+            let ionAlert = document.createElement('ion-alert');
+                ionAlert.header = "BMI";
+                ionAlert.message = "Your BMI is " + bmi;
+                ionAlert.buttons = [
+                    {
+                        text: 'OK',
+                        role: 'cancel',
+                        handler: () => {
+                            //alert('you clicked ok');
+                        }
+                    }
+                ];
+
+            document.body.appendChild(ionAlert);
+            //ionAlert.present();
+        }
+    </script>
+</body>
+</html>
